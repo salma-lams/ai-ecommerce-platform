@@ -28,3 +28,4 @@ Run `docker-compose up --build` in the root directory to spin up the FastAPI ser
 ## Environment Variables Security
 **NEVER** commit your `.env` or `.env.local` files to version control. They are automatically ignored by `.gitignore`. 
 Ensure you inject your actual credentials directly into Vercel (for frontend) and Render/Railway (for backend) dashboards during real production deployments.
+

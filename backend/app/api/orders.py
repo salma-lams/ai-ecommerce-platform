@@ -10,7 +10,9 @@ from app.schemas.order import PaymentIntentRequest, PaymentIntentResponse, Order
 router = APIRouter()
 
 # Initialize Stripe API Key
-stripe.api_key = settings.STRIPE_API_KEY
+STRIPE_KEY = settings.STRIPE_API_KEY
+if STRIPE_KEY:
+    stripe.api_key = STRIPE_KEY
 
 @router.post("/create-payment-intent", response_model=PaymentIntentResponse, summary="Create a Stripe PaymentIntent for a cart")
 async def create_payment_intent(req: PaymentIntentRequest, db: AsyncSession = Depends(get_db)):
@@ -18,12 +20,18 @@ async def create_payment_intent(req: PaymentIntentRequest, db: AsyncSession = De
     num_items = sum(item.quantity for item in req.items)
     amount = 9900 * num_items if num_items > 0 else 9900 # Default £99
 
+    # DEMO MODE: If no API key, return a mock response for UI testing
+    if not STRIPE_KEY:
+        return PaymentIntentResponse(
+            clientSecret="pi_mock_secret_DEMO_MODE_ONLY",
+            orderId="ORD-DEMO-123"
+        )
+
     try:
         # Create a PaymentIntent with the order amount and currency
         intent = stripe.PaymentIntent.create(
             amount=amount,
             currency="gbp",
-            # automatic_payment_methods is enabled by default in latest API versions
             automatic_payment_methods={"enabled": True}, 
         )
 

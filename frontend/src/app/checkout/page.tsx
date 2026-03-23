@@ -5,6 +5,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import { createPaymentIntent } from '@/lib/api';
 import CheckoutForm from '@/components/checkout/CheckoutForm';
+import MockCheckoutForm from '@/components/checkout/MockCheckoutForm';
 
 // Initialize Stripe outside component render to avoid recreating the object
 // Make sure NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is in your frontend .env
@@ -52,6 +53,9 @@ export default function CheckoutPage() {
           <div className="flex justify-center my-20 animate-pulse text-gray-400 font-semibold tracking-widest text-sm uppercase">
             Initializing Payment Gateway...
           </div>
+        ) : clientSecret.startsWith("pi_mock") ? (
+          // Demo Mode Fallback
+          <MockCheckoutForm amount={9900} />
         ) : (
           <Elements 
             stripe={stripePromise} 
@@ -65,7 +69,7 @@ export default function CheckoutPage() {
                   colorText: '#30313d',
                   colorDanger: '#df1b41',
                   spacingUnit: '4px',
-                  borderRadius: '8px',
+                  borderRadius: '16px', // Matches luxury design
                 }
               }
             }}

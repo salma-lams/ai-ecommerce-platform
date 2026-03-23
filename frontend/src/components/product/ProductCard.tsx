@@ -1,5 +1,8 @@
-import Link from 'next/link';
+"use client";
+
 import Image from 'next/image';
+import { useCart } from '@/context/CartContext';
+import { useState } from 'react';
 
 interface Product {
   id: string;
@@ -10,11 +13,19 @@ interface Product {
 }
 
 export default function ProductCard({ product }: { product: Product }) {
+  const { addItem } = useCart();
+  const [isAdded, setIsAdded] = useState(false);
   const displayPrice = typeof product.price === 'number' ? `£${product.price.toFixed(2)}` : product.price;
+
+  const handleAddToCart = () => {
+    addItem(product);
+    setIsAdded(true);
+    setTimeout(() => setIsAdded(false), 2000);
+  };
 
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-gray-100 dark:bg-[#0a0a0a] dark:border-gray-800">
-      {/* Image */}
+      {/* ... image logic ... */}
       <div className="aspect-[4/5] bg-gray-50 dark:bg-gray-900 overflow-hidden relative">
         <Image
           src={product.imageUrl}
@@ -36,7 +47,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
       {/* Info */}
       <div className="flex flex-col p-5 flex-1 items-center text-center">
-        {/* Rating stars — brand yellow */}
+        {/* Rating stars ... */}
         <div className="flex justify-center items-center gap-0.5 mb-3" style={{color: 'var(--brand-yellow)'}}>
           {[1,2,3,4].map(star => (
             <svg key={star} xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -53,9 +64,11 @@ export default function ProductCard({ product }: { product: Product }) {
 
         <div className="mt-4 pt-4 flex w-full flex-col items-center border-t border-gray-50 dark:border-gray-800">
           <span className="text-[15px] font-medium text-gray-700 dark:text-gray-200 mb-4">{displayPrice}</span>
-          {/* Brand gradient button */}
-          <button className="btn-brand w-full px-4 py-3 text-[13px]">
-            Add to Bag
+          <button 
+            onClick={handleAddToCart}
+            className={`btn-brand w-full px-4 py-3 text-[13px] transition-all ${isAdded ? 'bg-green-500 scale-95' : ''}`}
+          >
+            {isAdded ? 'Added to Bag!' : 'Add to Bag'}
           </button>
         </div>
       </div>

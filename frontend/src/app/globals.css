@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+:root {
+  /* ChicBoutiq brand colors */
+  --brand-blue:   #5bbfe8;
+  --brand-red:    #c1121f;
+  --brand-yellow: #F5C518;
+  --brand-orange: #E8611A;
+  --brand-green:  #22c55e;
+
+  --background: #f3faff;
+  --foreground: #111111;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --color-brand-blue:   var(--brand-blue);
+  --color-brand-red:    var(--brand-red);
+  --color-brand-yellow: var(--brand-yellow);
+  --color-brand-orange: var(--brand-orange);
+  --color-brand-green:  var(--brand-green);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Brand utility classes */
+.btn-brand {
+  background: var(--brand-blue);
+  color: white;
+  border-radius: 9999px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+.btn-brand:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 30px rgba(91, 191, 232, 0.4);
+  filter: brightness(1.1);
+}
+.btn-brand:active {
+  transform: scale(0.97);
+}

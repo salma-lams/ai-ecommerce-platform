@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+sqlalchemy
+asyncpg
+aiosqlite
+greenlet
+pydantic
+pydantic-settings
+pyjwt
+supabase
+langchain
+langchain-openai
+python-dotenv
+redis
+stripe
